@@ -1,0 +1,284 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "firstname",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "ui": {
+          "label": "Firstname"
+        },
+        "name": "firstname"
+      },
+      {
+        "type": "text",
+        "fieldName": "lastname",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "ui": {
+          "label": "Lastname"
+        },
+        "name": "lastname"
+      },
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {}
+        },
+        "ui": {
+          "label": "Email"
+        },
+        "name": "email"
+      },
+      {
+        "type": "number",
+        "fieldName": "group",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "ui": {
+          "input": "select",
+          "label": "Group"
+        },
+        "name": "group"
+      },
+      {
+        "type": "number",
+        "fieldName": "status",
+        "options": {
+          "rules": {}
+        },
+        "ui": {
+          "label": "Status",
+          "input": "check"
+        },
+        "name": "status"
+      },
+      {
+        "type": "number",
+        "fieldName": "userID",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "userID"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "email",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.email.lowercase()}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "queryUser",
+        "module": "dbconnector",
+        "action": "single",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "SELECT",
+            "columns": [
+              {
+                "table": "users",
+                "column": "email"
+              }
+            ],
+            "table": {
+              "name": "users"
+            },
+            "joins": [],
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "users.userID",
+                  "field": "users.userID",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.userID}}",
+                  "data": {
+                    "table": "users",
+                    "column": "userID",
+                    "type": "number"
+                  },
+                  "operation": "="
+                }
+              ],
+              "conditional": null,
+              "valid": true
+            },
+            "query": "SELECT email\nFROM users\nWHERE userID = :P1 /* {{$_POST.userID}} */",
+            "params": [
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P1",
+                "value": "{{$_POST.userID}}"
+              }
+            ]
+          }
+        },
+        "output": true,
+        "meta": [
+          {
+            "type": "text",
+            "name": "email"
+          }
+        ],
+        "outputType": "object"
+      },
+      {
+        "name": "",
+        "module": "core",
+        "action": "condition",
+        "options": {
+          "if": "{{queryUser.email != email}}",
+          "then": {
+            "steps": {
+              "name": "validate",
+              "module": "validator",
+              "action": "validate",
+              "options": {
+                "data": [
+                  {
+                    "name": "validate_1",
+                    "value": "{{email}}",
+                    "rules": {
+                      "db:notexists": {
+                        "param": {
+                          "connection": "db",
+                          "table": "users",
+                          "column": "email"
+                        }
+                      }
+                    },
+                    "fieldName": "email"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "outputType": "boolean"
+      },
+      {
+        "name": "updateUser",
+        "module": "dbupdater",
+        "action": "update",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "update",
+            "values": [
+              {
+                "table": "users",
+                "column": "firstname",
+                "type": "text",
+                "value": "{{$_POST.firstname}}"
+              },
+              {
+                "table": "users",
+                "column": "lastname",
+                "type": "text",
+                "value": "{{$_POST.lastname}}"
+              },
+              {
+                "table": "users",
+                "column": "email",
+                "type": "text",
+                "value": "{{$_POST.email}}"
+              },
+              {
+                "table": "users",
+                "column": "group",
+                "type": "number",
+                "value": "{{$_POST.group}}"
+              },
+              {
+                "table": "users",
+                "column": "status",
+                "type": "number",
+                "value": "{{$_POST.status.default(0)}}"
+              }
+            ],
+            "table": "users",
+            "wheres": {
+              "condition": "AND",
+              "rules": [
+                {
+                  "id": "userID",
+                  "type": "double",
+                  "operator": "equal",
+                  "value": "{{$_POST.userID}}",
+                  "data": {
+                    "column": "userID"
+                  },
+                  "operation": "="
+                }
+              ]
+            },
+            "query": "UPDATE users\nSET firstname = :P1 /* {{$_POST.firstname}} */, lastname = :P2 /* {{$_POST.lastname}} */, email = :P3 /* {{$_POST.email}} */, group = :P4 /* {{$_POST.group}} */, status = :P5 /* {{$_POST.status.default(0)}} */\nWHERE userID = :P6 /* {{$_POST.userID}} */",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.firstname}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.lastname}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{$_POST.email}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.group}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{$_POST.status.default(0)}}"
+              },
+              {
+                "operator": "equal",
+                "type": "expression",
+                "name": ":P6",
+                "value": "{{$_POST.userID}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

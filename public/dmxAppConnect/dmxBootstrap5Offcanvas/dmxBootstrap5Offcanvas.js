@@ -1,0 +1,8 @@
+/*!
+ DMXzone Bootstrap 5 Offcanvas
+ Version: 1.0.0
+ (c) 2021 DMXzone.com
+ @build 2021-04-08 12:32:30
+ */
+dmx.Component("bs5-offcanvas",{initialData:{open:!1},attributes:{show:{type:Boolean,default:!1},nobackdrop:{type:Boolean,default:!1},nokeyboard:{type:Boolean,default:!1},scroll:{type:Boolean,default:!1}},methods:{toggle:function(){var n=this;requestAnimationFrame(function(){n.instance.toggle()})},show:function(){var n=this;requestAnimationFrame(function(){n.instance.show()})},hide:function(){var n=this;requestAnimationFrame(function(){n.instance.hide()})}},events:{show:Event,shown:Event,hide:Event,hidden:Event},onShown:function(){this.set("open",!0)},onHidden:function(){this.set("open",!1)},render:function(n){this.$node=n,this.$parse(),this.$node.addEventListener("show.bs.offcanvas",this.dispatchEvent.bind(this,"show")),this.$node.addEventListener("shown.bs.offcanvas",this.dispatchEvent.bind(this,"shown")),this.$node.addEventListener("hide.bs.offcanvas",this.dispatchEvent.bind(this,"hide")),this.$node.addEventListener("hidden.bs.offcanvas",this.dispatchEvent.bind(this,"hidden")),this.$node.addEventListener("shown.bs.offcanvas",this.onShown.bind(this)),this.$node.addEventListener("hidden.bs.offcanvas",this.onHidden.bind(this)),this.instance=new bootstrap.Offcanvas(this.$node,{backdrop:!this.props.nobackdrop,keyboard:!this.props.nokeyboard,scroll:this.props.scroll}),this.update({})},update:function(n){n.show!=this.props.show&&(this.$node.classList.toggle("show",this.props.show),this.set("open",this.props.show))}});
+//# sourceMappingURL=../maps/dmxBootstrap5Offcanvas.js.map

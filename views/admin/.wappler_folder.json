@@ -1,0 +1,22 @@
+{
+  "index.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "categories.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "recipes.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "comments.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  },
+  "users.ejs": {
+    "layoutPage": "admin",
+    "description": ""
+  }
+}

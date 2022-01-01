@@ -1,0 +1,248 @@
+{
+  "type": "sqlite3",
+  "connection": {
+    "filename": "/database.sqlite3"
+  },
+  "direct": true,
+  "schema": {
+    "tables": {
+      "users": {
+        "db": {},
+        "columns": {
+          "userID": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "firstname": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "lastname": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "email": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "password": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "group": {
+            "db": {
+              "type": "integer",
+              "default": "'1'",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "status": {
+            "db": {
+              "type": "integer",
+              "default": "'0'",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "created": {
+            "db": {
+              "type": "datetime",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "categories": {
+        "db": {},
+        "columns": {
+          "categoryID": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "name": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "description": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "recipes": {
+        "db": {},
+        "columns": {
+          "recipeID": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "categoryID": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "categoryID",
+              "inTable": "categories",
+              "onUpdate": "NO ACTION",
+              "onDelete": "CASCADE"
+            }
+          },
+          "userID": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "userID",
+              "inTable": "users",
+              "onUpdate": "NO ACTION",
+              "onDelete": "CASCADE"
+            }
+          },
+          "title": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "description": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "ingredients": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "step": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "other": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "status": {
+            "db": {
+              "type": "integer",
+              "default": "'0'",
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "created": {
+            "db": {
+              "type": "datetime",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      },
+      "comments": {
+        "db": {},
+        "columns": {
+          "commentID": {
+            "db": {
+              "type": "increments",
+              "primary": true,
+              "nullable": false
+            }
+          },
+          "recipeID": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "recipeID",
+              "inTable": "recipes",
+              "onUpdate": "NO ACTION",
+              "onDelete": "CASCADE"
+            }
+          },
+          "userID": {
+            "db": {
+              "type": "reference",
+              "primary": false,
+              "nullable": true,
+              "references": "userID",
+              "inTable": "users",
+              "onUpdate": "NO ACTION",
+              "onDelete": "CASCADE"
+            }
+          },
+          "message": {
+            "db": {
+              "type": "string",
+              "maxLength": 255,
+              "primary": false,
+              "nullable": true
+            }
+          },
+          "created": {
+            "db": {
+              "type": "datetime",
+              "default": "knex.fn.now()",
+              "primary": false,
+              "nullable": true
+            }
+          }
+        }
+      }
+    },
+    "views": {}
+  }
+}

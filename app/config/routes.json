@@ -1,0 +1,40 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "page": "index",
+      "routeType": "page",
+      "layout": "main"
+    },
+    {
+      "path": "/admin/",
+      "page": "admin/index",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/categories",
+      "page": "admin/categories",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/recipes",
+      "page": "admin/recipes",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/comments",
+      "page": "admin/comments",
+      "layout": "admin"
+    },
+    {
+      "path": "/admin/users",
+      "page": "admin/users",
+      "layout": "admin"
+    },
+    {
+      "path": "/password-reset",
+      "page": "password-reset",
+      "layout": "main"
+    }
+  ]
+}

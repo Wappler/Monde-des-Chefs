@@ -1,0 +1,113 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "",
+      "module": "core",
+      "action": "condition",
+      "options": {
+        "if": "{{identity}}",
+        "then": {
+          "steps": {
+            "name": "query",
+            "module": "dbconnector",
+            "action": "single",
+            "options": {
+              "connection": "db",
+              "sql": {
+                "type": "SELECT",
+                "columns": [
+                  {
+                    "table": "users",
+                    "column": "*"
+                  }
+                ],
+                "table": {
+                  "name": "users"
+                },
+                "joins": [],
+                "wheres": {
+                  "condition": "AND",
+                  "rules": [
+                    {
+                      "id": "users.userID",
+                      "field": "users.userID",
+                      "type": "double",
+                      "operator": "equal",
+                      "value": "{{identity}}",
+                      "data": {
+                        "table": "users",
+                        "column": "userID",
+                        "type": "number"
+                      },
+                      "operation": "="
+                    }
+                  ],
+                  "conditional": null,
+                  "valid": true
+                },
+                "query": "SELECT *\nFROM users\nWHERE userID = :P1 /* {{identity}} */",
+                "params": [
+                  {
+                    "operator": "equal",
+                    "type": "expression",
+                    "name": ":P1",
+                    "value": "{{identity}}"
+                  }
+                ]
+              }
+            },
+            "output": true,
+            "meta": [
+              {
+                "type": "number",
+                "name": "userID"
+              },
+              {
+                "type": "text",
+                "name": "firstname"
+              },
+              {
+                "type": "text",
+                "name": "lastname"
+              },
+              {
+                "type": "text",
+                "name": "email"
+              },
+              {
+                "type": "text",
+                "name": "password"
+              },
+              {
+                "type": "number",
+                "name": "group"
+              },
+              {
+                "type": "number",
+                "name": "status"
+              },
+              {
+                "type": "datetime",
+                "name": "created"
+              }
+            ],
+            "outputType": "object"
+          }
+        }
+      },
+      "outputType": "boolean"
+    }
+  }
+}

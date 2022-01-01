@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+
+<head>
+    <base href="/">
+    <script src="dmxAppConnect/dmxAppConnect.js"></script>
+    <meta charset="UTF-8">
+    <title>Monde des Chefs - Admin</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="bootstrap/5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer=""></script>
+    <script src="dmxAppConnect/dmxBootstrap5Offcanvas/dmxBootstrap5Offcanvas.js" defer=""></script>
+    <script src="dmxAppConnect/dmxRouting/dmxRouting.js" defer=""></script>
+    <link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+    <script src="dmxAppConnect/dmxNotifications/dmxNotifications.js"></script>
+    <script src="dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer=""></script>
+    <link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+    <script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+    <link rel="stylesheet" href="dmxAppConnect/dmxBootstrap5TableGenerator/dmxBootstrap5TableGenerator.css" />
+    <script src="dmxAppConnect/dmxDataTraversal/dmxDataTraversal.js"></script>
+    <script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="admin" class="root">
+    <dmx-notifications id="notifies"></dmx-notifications>
+    <div class="offcanvas offcanvas-start" id="offcanvas1" is="dmx-bs5-offcanvas" tabindex="-1">
+        <div class="offcanvas-header">
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <div class="navbar-nav flex-column">
+                            <a class="nav-item nav-link active" href="admin/" internal>Home</a>
+                            <a class="nav-item nav-link" href="admin/categories" internal>Categories</a>
+                            <a class="nav-item nav-link" href="admin/recipes" internal>Recipes</a>
+                            <a class="nav-item nav-link" href="admin/comments" internal>Comments</a>
+                            <a class="nav-item nav-link" href="admin/users" internal>Users</a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <button class="btn pt-0 pb-0 ps-0 pe-0" dmx-on:click="offcanvas1.show()" id="btnShowOC"><i class="fas fa-align-left fa-lg"></i></button>
+                        <h1 class="h4">Monde des Chefs</h1>
+                        <button class="btn" id="btnLogout">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div is="dmx-view" id="content">
+            <%- await include(content, locals); %>
+        </div>
+    </main>
+    <script src="bootstrap/5/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

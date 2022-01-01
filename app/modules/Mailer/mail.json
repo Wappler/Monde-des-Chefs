@@ -1,0 +1,10 @@
+{
+  "name": "mail",
+  "module": "mail",
+  "action": "setup",
+  "options": {
+    "host": "mail.tpg.com.au",
+    "username": "pleysier",
+    "password": "berend1"
+  }
+}

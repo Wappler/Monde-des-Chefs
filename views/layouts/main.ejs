@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Untitled Document</title>
+
+    <link rel="stylesheet" href="bootstrap/5/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="dmxAppConnect/dmxValidator/dmxValidator.css" />
+    <link rel="stylesheet" href="dmxAppConnect/dmxNotifications/dmxNotifications.css" />
+
+    <script src="dmxAppConnect/dmxAppConnect.js"></script>
+    <script src="dmxAppConnect/dmxBootstrap5Navigation/dmxBootstrap5Navigation.js" defer=""></script>
+    <script src="dmxAppConnect/dmxRouting/dmxRouting.js" defer=""></script>
+    <script src="dmxAppConnect/dmxBootstrap5Modal/dmxBootstrap5Modal.js" defer=""></script>
+    <script src="dmxAppConnect/dmxValidator/dmxValidator.js" defer=""></script>
+    <script src="dmxAppConnect/dmxNotifications/dmxNotifications.js" defer=""></script>
+    <script src="dmxAppConnect/dmxBootstrap5Alert/dmxBootstrap5Alert.js"></script>
+    <script src="dmxAppConnect/dmxBrowser/dmxBrowser.js"></script>
+    <script src="dmxAppConnect/dmxFormatter/dmxFormatter.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="main">
+    <dmx-serverconnect id="scLogout" url="api/security/user_logout" noload></dmx-serverconnect>
+    <dmx-serverconnect id="scUserLoggedin" url="api/security/user_loggedin"></dmx-serverconnect>
+    <dmx-notifications id="notifies1"></dmx-notifications>
+    <header class="bg-light h-auto">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                        <a class="navbar-brand ms-auto" href="#">Navbar</a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1_collapse" aria-controls="navbar1_collapse" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-between" id="navbar1_collapse">
+                            <div class="navbar-nav">
+                                <a class="nav-item nav-link active" href="#">Home</a>
+                                <a class="nav-item nav-link" href="#">About</a>
+                                <a class="nav-item nav-link" href="#">Contact</a>
+                            </div>
+                            <button id="btn1" class="btn" dmx-show="scUserLoggedin.data.identity" dmx-on:click="scLogout.load();scUserLoggedin.reset();notifies1.success('You are now logged out.')">Logout</button>
+                            <button id="btnLogin" class="btn" dmx-on:click="modalLoginRegister.show()" dmx-hide="scUserLoggedin.data.identity">Login</button>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="ms-0">
+        <div is="dmx-view" id="content">
+            <%- await include(content, locals); %>
+        </div>
+    </main>
+    <div class="modal fade" id="modalLoginRegister" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="frmRegister.reset()">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <ul class="nav nav-pills nav-justified" id="navTabs1_tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="navTabs1_1_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1" aria-selected="true">Login</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" aria-selected="false">Register</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="navTabs1_content">
+                                <div class="tab-pane fade show active" id="navTabs1_1" role="tabpanel">
+                                    <div class="container-fluid">
+                                        <form id="frmLogin" method="post" is="dmx-serverconnect-form" action="api/security/user_login" dmx-on:success="scUserLoggedin.load({});notifies1.success('You are now logged in.');modalLoginRegister.hide()" dmx-on:unauthorized="notifies1.danger('Your details are not correct. Please try again.')">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <h1>Log In</h1>
+                                                            <p class="text-h3">Enter your details below.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col mt-4">
+                                                            <input type="text" id="inp_email" name="email" class="form-control" placeholder="Email" required="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-4">
+                                                        <div class="col">
+                                                            <input type="password" id="inp_password" name="password" class="form-control" placeholder="Password" required="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mt-4">
+                                                        <div class="col">
+                                                            <button id="btnCancelLogin" class="btn btn-secondary" dmx-on:click="modalLoginRegister.hide()">Cancel</button>
+                                                            <button id="frmLogin.submit" class="btn btn-primary" type="submit">Submit</button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <button id="btn4" class="btn" dmx-on:click.prevent="modalLoginRegister.hide();modalPasswordForgot.show()">Forgot Password?</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="navTabs1_2" role="tabpanel">
+                                    <div class="container-fluid">
+                                        <form id="frmRegister" method="post" is="dmx-serverconnect-form" action="api/security/user_registration" dmx-on:success="notifies1.success('You have successfully regisred and are now logged in.');modalLoginRegister.hide()">
+                                            <div class="row justify-content-center">
+                                                <div class="col">
+                                                    <div class="row">
+                                                        <div class="col text-center">
+                                                            <h1>Register</h1>
+                                                            <p class="text-h3">Enter your registration details below.</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center">
+                                                        <div class="col mt-4">
+                                                            <input type="text" id="ins_firstname" name="firstname" class="form-control" placeholder="Firstname" required="">
+                                                        </div>
+                                                        <div class="col mt-4">
+                                                            <input type="text" id="ins_lastname" name="lastname" class="form-control" placeholder="Lastname" required="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mt-4">
+                                                        <div class="col">
+                                                            <input type="email" id="ins_email" name="email" class="form-control" placeholder="Email" required="" data-rule-email="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row align-items-center mt-4">
+                                                        <div class="col">
+                                                            <input type="password" id="ins_password" name="password" class="form-control" placeholder="Password" required="">
+                                                        </div>
+                                                        <div class="col">
+                                                            <input type="password" id="ins_password2" name="password2" class="form-control" placeholder="Confirm Password" required="" data-rule-equalto="password">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row justify-content-start mt-4">
+                                                        <div class="col">
+                                                            <div class="form-check">
+                                                                <label class="form-check-label">
+                                                                    <input type="checkbox" class="form-check-input" required="">
+                                                                    I Read and Accept <a href="#">Terms and Conditions</a>
+                                                                </label>
+                                                            </div>
+                                                            <button id="btnCancelRegister" class="btn btn-secondary mt-4" dmx-on:click="modalLoginRegister.hide()">Cancel</button>
+                                                            <button id="frmRegister.submit" class="btn mt-4 btn-primary" type="submit">Register</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="modalPasswordForgot" is="dmx-bs5-modal" tabindex="-1" dmx-on:hide-bs-modal="frmPasswordForgot.reset()">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">
+                            <h4>Forgot Password?</h4>
+                            <p>Once the form has been submitted, you will receive an email with the link to the password reset form.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <form id="frmPasswordForgot" method="post" is="dmx-serverconnect-form" action="api/security/password_request" dmx-on:success="notifies1.success('You will receive an email containing a link to the reset page.');modalPasswordForgot.hide()">
+                                <div class="mb-3">
+                                    <label for="PassForgetEmail" class="form-label">Email</label>
+                                    <input type="text" class="form-control" id="PassForgetEmail" name="email" aria-describedby="input1_help" placeholder="Enter your email address" required="" data-rule-email="">
+                                </div>
+                                <button id="btn2" class="btn btn-secondary" dmx-on:click="modalPasswordForgot.hide()">Cancel</button>
+                                <button id="btn3" class="btn btn-primary" type="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="bootstrap/5/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

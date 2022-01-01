@@ -1,0 +1,30 @@
+:root {
+    --offcanvas-width: 250px;
+    --headerHeight: 40px;
+}
+.offcanvas-start {
+    width: var(--offcanvas-width);
+}
+header {
+    height: var(--headerHeight);
+}
+@media (min-width: 992px) {
+    main {
+        margin-left: var(--offcanvas-width);
+    }
+    .offcanvas {
+        -webkit-transform: none;
+                transform: none;
+        visibility: visible !important;
+        top: var(--headerHeight);
+    }
+    .offcanvas-backdrop::before {
+        display: none;
+    }
+    .offcanvas-header .btn-close {
+        visibility: hidden;
+    }
+    #btnShowOC {
+        visibility: hidden;  
+    }
+}

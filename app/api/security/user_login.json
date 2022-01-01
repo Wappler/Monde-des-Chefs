@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "options": {
+      "linkedFile": "/views/layouts/main.ejs",
+      "linkedForm": "frmLogin"
+    },
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "password",
+        "options": {
+          "rules": {
+            "core:required": {
+              "param": ""
+            }
+          }
+        },
+        "name": "password"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "email",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.email.lowercase()}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "identity",
+        "module": "auth",
+        "action": "login",
+        "options": {
+          "provider": "security",
+          "username": "{{email}}",
+          "password": "{{$_POST.password.sha256('mondedeschefs')}}",
+          "remember": 1
+        },
+        "output": true,
+        "meta": []
+      }
+    ]
+  }
+}

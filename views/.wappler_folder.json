@@ -1,0 +1,6 @@
+{
+  "password-reset.ejs": {
+    "layoutPage": "main",
+    "description": ""
+  }
+}

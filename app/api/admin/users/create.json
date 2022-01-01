@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "firstname",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "ui": {
+          "label": "Firstname"
+        },
+        "name": "firstname"
+      },
+      {
+        "type": "text",
+        "fieldName": "lastname",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "ui": {
+          "label": "Lastname"
+        },
+        "name": "lastname"
+      },
+      {
+        "type": "text",
+        "fieldName": "email",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:email": {}
+          }
+        },
+        "ui": {
+          "label": "Email"
+        },
+        "name": "email"
+      },
+      {
+        "type": "text",
+        "fieldName": "password",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "ui": {
+          "label": "Password"
+        },
+        "name": "password"
+      },
+      {
+        "type": "text",
+        "fieldName": "password2",
+        "options": {
+          "rules": {
+            "core:required": {},
+            "core:equalTo": {
+              "param": "password"
+            }
+          }
+        },
+        "ui": {
+          "label": "Confirm Password"
+        },
+        "name": "password2"
+      }
+    ]
+  },
+  "exec": {
+    "steps": [
+      {
+        "name": "email",
+        "module": "core",
+        "action": "setvalue",
+        "options": {
+          "value": "{{$_POST.email.lowercase()}}"
+        },
+        "meta": [],
+        "outputType": "text"
+      },
+      {
+        "name": "validate",
+        "module": "validator",
+        "action": "validate",
+        "options": {
+          "data": [
+            {
+              "name": "email",
+              "value": "{{email}}",
+              "rules": {
+                "db:notexists": {
+                  "param": {
+                    "connection": "db",
+                    "table": "users",
+                    "column": "email"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "name": "insertUser",
+        "module": "dbupdater",
+        "action": "insert",
+        "options": {
+          "connection": "db",
+          "sql": {
+            "type": "insert",
+            "values": [
+              {
+                "table": "users",
+                "column": "firstname",
+                "type": "text",
+                "value": "{{$_POST.firstname}}"
+              },
+              {
+                "table": "users",
+                "column": "lastname",
+                "type": "text",
+                "value": "{{$_POST.lastname}}"
+              },
+              {
+                "table": "users",
+                "column": "email",
+                "type": "text",
+                "value": "{{email}}"
+              },
+              {
+                "table": "users",
+                "column": "password",
+                "type": "text",
+                "value": "{{$_POST.password.sha256('mondedeschefs')}}"
+              },
+              {
+                "table": "users",
+                "column": "group",
+                "type": "number",
+                "value": "1"
+              },
+              {
+                "table": "users",
+                "column": "status",
+                "type": "number",
+                "value": "0"
+              },
+              {
+                "table": "users",
+                "column": "created",
+                "type": "datetime",
+                "value": "{{NOW}}"
+              }
+            ],
+            "table": "users",
+            "returning": "userID",
+            "query": "INSERT INTO users\n(firstname, lastname, email, password, group, status, created) VALUES (:P1 /* {{$_POST.firstname}} */, :P2 /* {{$_POST.lastname}} */, :P3 /* {{email}} */, :P4 /* {{$_POST.password.sha256('mondedeschefs')}} */, '1', '0', :P5 /* {{NOW}} */)",
+            "params": [
+              {
+                "name": ":P1",
+                "type": "expression",
+                "value": "{{$_POST.firstname}}"
+              },
+              {
+                "name": ":P2",
+                "type": "expression",
+                "value": "{{$_POST.lastname}}"
+              },
+              {
+                "name": ":P3",
+                "type": "expression",
+                "value": "{{email}}"
+              },
+              {
+                "name": ":P4",
+                "type": "expression",
+                "value": "{{$_POST.password.sha256('mondedeschefs')}}"
+              },
+              {
+                "name": ":P5",
+                "type": "expression",
+                "value": "{{NOW}}"
+              }
+            ]
+          }
+        },
+        "meta": [
+          {
+            "name": "identity",
+            "type": "text"
+          },
+          {
+            "name": "affected",
+            "type": "number"
+          }
+        ]
+      }
+    ]
+  }
+}

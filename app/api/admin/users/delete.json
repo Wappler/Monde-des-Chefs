@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "$_POST": [
+      {
+        "type": "text",
+        "fieldName": "userID",
+        "options": {
+          "rules": {
+            "core:required": {}
+          }
+        },
+        "name": "userID"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "deleteUser",
+      "module": "dbupdater",
+      "action": "delete",
+      "options": {
+        "connection": "db",
+        "sql": {
+          "type": "delete",
+          "table": "users",
+          "wheres": {
+            "condition": "AND",
+            "rules": [
+              {
+                "id": "userID",
+                "type": "double",
+                "operator": "equal",
+                "value": "{{$_POST.userID}}",
+                "data": {
+                  "column": "userID"
+                },
+                "operation": "="
+              }
+            ]
+          },
+          "query": "DELETE\nFROM users\nWHERE userID = :P1 /* {{$_POST.userID}} */",
+          "params": [
+            {
+              "operator": "equal",
+              "type": "expression",
+              "name": ":P1",
+              "value": "{{$_POST.userID}}"
+            }
+          ]
+        }
+      },
+      "meta": [
+        {
+          "name": "affected",
+          "type": "number"
+        }
+      ]
+    }
+  }
+}

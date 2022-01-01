@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "$_GET": [
+      {
+        "type": "text",
+        "name": "sort"
+      },
+      {
+        "type": "text",
+        "name": "dir"
+      }
+    ]
+  },
+  "exec": {
+    "steps": {
+      "name": "queryUsers",
+      "module": "dbconnector",
+      "action": "select",
+      "options": {
+        "sql": {
+          "type": "SELECT",
+          "columns": [
+            {
+              "table": "users",
+              "column": "*"
+            }
+          ],
+          "table": {
+            "name": "users"
+          },
+          "joins": [],
+          "orders": [
+            {
+              "table": "users",
+              "column": "firstname",
+              "direction": "ASC"
+            },
+            {
+              "table": "users",
+              "column": "lastname",
+              "direction": "ASC"
+            },
+            {
+              "table": "users",
+              "column": "email",
+              "direction": "ASC"
+            }
+          ],
+          "query": "SELECT *\nFROM users\nORDER BY firstname ASC, lastname ASC, email ASC",
+          "params": []
+        },
+        "connection": "db"
+      },
+      "output": true,
+      "meta": [
+        {
+          "type": "number",
+          "name": "userID"
+        },
+        {
+          "type": "text",
+          "name": "firstname"
+        },
+        {
+          "type": "text",
+          "name": "lastname"
+        },
+        {
+          "type": "text",
+          "name": "email"
+        },
+        {
+          "type": "text",
+          "name": "password"
+        },
+        {
+          "type": "number",
+          "name": "group"
+        },
+        {
+          "type": "number",
+          "name": "status"
+        },
+        {
+          "type": "datetime",
+          "name": "created"
+        }
+      ],
+      "outputType": "array"
+    }
+  }
+}
